@@ -4,7 +4,29 @@
     "web": {
       "bundler": "metro"
     },
-    "name": "tabs-ims-new",
-    "slug": "tabs-ims-new"
+    "icon": "./assets/tabs.png",
+    "splash": {
+      "image": "./assets/tabs-splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1e2227"
+    },
+    "android": {
+      "package": "com.tabsIMS.triptex",
+      "versionCode": 3,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/tabs.png",
+        "backgroundColor": "#1e2227"
+      }
+    },
+    "name": "TabsIMS",
+    "slug": "tabs-ims",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "extra": {
+      "eas": {
+        "projectId": "7e6ad0e3-013d-4bc9-85a5-6dee13fd714a"
+      }
+    }
+    
   }
 }

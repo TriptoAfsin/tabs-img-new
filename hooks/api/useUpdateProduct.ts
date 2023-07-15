@@ -5,11 +5,12 @@ const baseUrl = `https://api.triptex.me`;
 
 const handleUpdateProduct = async (values: any) => {
   const requestBody = {
+    id: values?.id,
     name: values.name,
     color: values.color,
     type: values.type,
     style: values.style,
-    total_qty: parseInt(values.total_qty),
+    total_qty: values?.total_qty ? parseInt(values.total_qty) : undefined,
     po: values.po,
   };
   return axios.put(`${baseUrl}/thesis/products/${values?.id}`, requestBody, {

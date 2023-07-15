@@ -2,17 +2,18 @@ import React from "react";
 import { Box, Pressable, Spinner } from "native-base";
 import { useGetAllProducts } from "../hooks/api/useGetAllProducts";
 import { useState, useRef } from "react";
-import { Modal } from "native-base";
 import Card from "../components/Crad";
 import {
-  Text,
   View,
   StyleSheet,
   SafeAreaView,
   ScrollView,
   FlatList,
+  Modal,
 } from "react-native";
 import UpdateProduct from "../components/forms/UpdateProduct";
+import { Text } from "native-base";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 // // OR
 // import { ScrollView, FlatList } from 'react-native-gesture-handler';
 
@@ -21,6 +22,29 @@ export default function AllProducts() {
   const finalRef = useRef(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState({});
+  const styles = StyleSheet.create({
+    centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 22,
+    },
+    modalView: {
+      margin: 20,
+      backgroundColor: "white",
+      borderRadius: 20,
+      padding: 35,
+
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+  });
   const {
     isLoading: isAllProductsLoading,
     data: allProductsData,
@@ -28,32 +52,48 @@ export default function AllProducts() {
   } = useGetAllProducts();
   console.log(allProductsData?.data);
   return (
-    <View>
+    <>
       <Modal
-        isOpen={modalVisible}
-        onClose={() => setModalVisible(false)}
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
+        visible={modalVisible}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+        style={{
+          marginTop: 22,
+          marginBottom: 22,
+        }}
       >
-        <Modal.Content>
-          <Modal.CloseButton />
-          <Modal.Header>Update Product</Modal.Header>
-          <Modal.Body>
+        <View style={styles.modalView}>
+          {/* <Modal.CloseButton /> */}
+          <View>
+            <Box display={'flex'} flexDir={'row'}>
+            <Text fontSize={20} fontWeight={600} minW={'90%'}>
+              Update Product
+            </Text>
+            <Pressable>
+                <FontAwesome name="window-close" size={30} color={"black"} onPress={() => setModalVisible(false)}/>
+            </Pressable>
+            </Box>
             <UpdateProduct
               ref={initialRef}
               setModal={setModalVisible}
               oldData={selectedProduct}
             />
-          </Modal.Body>
-        </Modal.Content>
+          </View>
+        </View>
       </Modal>
-      <Box display={"flex"} flexDir={"column"}>
+      <Box display={"flex"} flexDir={"column"} bg={"#202020"}>
         {isAllProductsLoading ? (
           <Spinner color="emerald.500" />
         ) : (
           <>
             <SafeAreaView>
-              <ScrollView>
+              <Box
+                display={"flex"}
+                flexDir={"column"}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
                 <FlatList
                   data={allProductsData?.data?.products}
                   renderItem={({ item }) => (
@@ -72,13 +112,13 @@ export default function AllProducts() {
                       />
                     </Pressable>
                   )}
-                  keyExtractor={item => item?.id}
+                  keyExtractor={item => `${item?.id}-${item?.name}`}
                 />
-              </ScrollView>
+              </Box>
             </SafeAreaView>
           </>
         )}
       </Box>
-    </View>
+    </>
   );
 }

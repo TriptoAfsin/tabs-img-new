@@ -4,24 +4,12 @@ import { Dimensions } from "react-native";
 
 export default function Card({ name, color, qty, type, style }) {
   return (
-    <Box
-      borderRadius="md"
-      my={2}
-      background={"#121212"}
-      py={2}
-      w={`${Dimensions?.get("window")}px`}
-    >
+    <Box borderRadius="md" my={2} background={"#333333"} py={2} w={`95%`} mr={1} ml={1}>
       <VStack space="4" divider={<Divider />}>
         <Box px="4" display={"flex"} flexDir={"row"} minH={"100px"}>
           <Box display={"flex"} flexDir={"column"}>
             <Box display={"flex"} flexDir={"row"}>
-              <Text
-                color={"white"}
-                fontWeight={600}
-                fontSize={20}
-                mr={5}
-                minW={`${Dimensions?.get("window")}px`}
-              >
+              <Text color={"white"} fontWeight={600} fontSize={20} mr={5}>
                 {name}
               </Text>
             </Box>
@@ -30,7 +18,6 @@ export default function Card({ name, color, qty, type, style }) {
               mb={2}
               display={"flex"}
               flexDir={"row"}
-              maxW={"70vw"}
               flexWrap={"wrap"}
             >
               <Text
@@ -39,7 +26,6 @@ export default function Card({ name, color, qty, type, style }) {
                 px={1}
                 bg={"#c5221f"}
                 borderRadius="md"
-                minW={"100px"}
                 mr={1}
               >
                 {type}
@@ -66,7 +52,7 @@ export default function Card({ name, color, qty, type, style }) {
               </Text>
             </Box>
           </Box>
-          <Text color={"white"} fontWeight={600} mr={5}>
+          <Text color={"white"} fontWeight={600} mr={5} ml={'auto'}>
             Qty: {qty}
           </Text>
         </Box>

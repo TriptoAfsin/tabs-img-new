@@ -5,7 +5,7 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { NativeBaseProvider } from "native-base";
@@ -49,18 +49,17 @@ function RootLayoutNav() {
       <QueryClientProvider client={queryClient}>
         <NativeBaseProvider>
           <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            value={DarkTheme}
           >
             <Stack>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="products" options={{ headerShown: true }} />
               <Stack.Screen name="rack-details" options={{ headerShown: true }} />
               <Stack.Screen name="product-details" options={{ headerShown: true }} />
-              <Stack.Screen name="modal" options={{ presentation: "modal" }} />
             </Stack>
           </ThemeProvider>
         </NativeBaseProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </>
   );

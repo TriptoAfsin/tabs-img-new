@@ -5,7 +5,7 @@ import { Text, View } from "../../components/Themed";
 import { Box, Button } from "native-base";
 import { Link } from "expo-router";
 import AllProducts from "../products";
-import { ScrollView, FlatList } from "react-native";
+import { ScrollView } from 'react-native-virtualized-view';
 
 export default function TabOneScreen() {
   return (
@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    backgroundColor: '#202020',
     justifyContent: "center",
   },
   title: {

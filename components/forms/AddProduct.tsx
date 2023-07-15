@@ -33,14 +33,42 @@ function AddProduct({ ref, setModal }) {
     () => {
       console.log("success");
       toast.show({
-        description: "Successfully Added Product 😁",
+        render: () => {
+          return (
+            <Box
+              bg="#0f9d58"
+              px="2"
+              py="1"
+              rounded="sm"
+              mb={5}
+              color={"white"}
+            >
+              <Text color={"white"}>Product Added Successfully 😁</Text>
+            </Box>
+          );
+        },
+        placement: "top"
       });
       setModal(false);
     },
     () => {
       console.log("err");
       toast.show({
-        description: "Error Occurred 😭",
+        render: () => {
+          return (
+            <Box
+              bg={"red.600"}
+              px="5"
+              py="1"
+              rounded="sm"
+              mb={5}
+              color={"white"}
+            >
+              <Text color={"white"}>Error Occurred 😭</Text>
+            </Box>
+          );
+        },
+        placement: "top"
       });
     },
     queryClient
@@ -242,8 +270,10 @@ function AddProduct({ ref, setModal }) {
         mt={5}
         mb={5}
       >
-        <Button.Group space={2}>
+        <Button.Group space={2} colorScheme="success">
           <Button
+            colorScheme="success"
+            isLoading={isLoading}
             onPress={() => {
               productMutate({
                 name: getValues("name"),

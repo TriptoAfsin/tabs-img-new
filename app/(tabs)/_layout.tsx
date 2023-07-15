@@ -1,8 +1,8 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
-import { Pressable, useColorScheme } from "react-native";
+import { Pressable, useColorScheme, Modal, View, StyleSheet} from "react-native";
 import { useState, useRef } from "react";
-import { Modal } from "native-base";
+import { Box, Text} from "native-base";
 
 import Colors from "../../constants/Colors";
 import AddProduct from "../../components/forms/AddProduct";
@@ -20,21 +20,59 @@ export default function TabLayout() {
   const initialRef = useRef(null);
   const finalRef = useRef(null);
 
+  const styles = StyleSheet.create({
+    centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 22,
+    },
+    modalView: {
+      margin: 20,
+      backgroundColor: "white",
+      borderRadius: 20,
+      padding: 35,
+
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+  });
+
   return (
     <>
       <Modal
-        isOpen={modalVisible}
-        onClose={() => setModalVisible(false)}
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
+        visible={modalVisible}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+        style={{
+          marginTop: 22,
+          marginBottom: 22,
+        }}
       >
-        <Modal.Content>
-          <Modal.CloseButton />
-          <Modal.Header>Add Product</Modal.Header>
-          <Modal.Body>
-          <AddProduct ref={initialRef} setModal={setModalVisible}/>
-          </Modal.Body>
-        </Modal.Content>
+        <View style={styles.modalView}>
+          {/* <Modal.CloseButton /> */}
+          <View>
+            <Box display={'flex'} flexDir={'row'}>
+            <Text fontSize={20} fontWeight={600} minW={'90%'}>
+              Add Product
+            </Text>
+            <Pressable>
+                <FontAwesome name="window-close" size={30} color={"black"} onPress={() => setModalVisible(false)}/>
+            </Pressable>
+            </Box>
+            <AddProduct
+              ref={initialRef}
+              setModal={setModalVisible}
+            />
+          </View>
+        </View>
       </Modal>
       <Tabs
         screenOptions={{
@@ -55,8 +93,8 @@ export default function TabLayout() {
                         setModalVisible(true);
                       }}
                       name="plus"
-                      size={25}
-                      color={Colors[colorScheme ?? "light"].text}
+                      size={35}
+                      color={'#f3f4f6'}
                       style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                     />
                   )}
@@ -77,7 +115,7 @@ export default function TabLayout() {
                     <FontAwesome
                       name="info-circle"
                       size={25}
-                      color={Colors[colorScheme ?? "light"].text}
+                      color={'#f3f4f6'}
                       style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                     />
                   )}
