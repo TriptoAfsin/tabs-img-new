@@ -84,7 +84,7 @@ export default function AllProducts() {
       </Modal>
       <Box display={"flex"} flexDir={"column"} bg={"#202020"}>
         {isAllProductsLoading ? (
-          <Spinner color="emerald.500" />
+          <Spinner color="emerald.500" size="lg" mt={10}/>
         ) : (
           <>
             <SafeAreaView>

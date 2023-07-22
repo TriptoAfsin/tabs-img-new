@@ -1,16 +1,24 @@
 import React from "react";
 import { VStack, Box, Divider, Text } from "native-base";
-import { Dimensions } from "react-native";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
-export default function Card({ name, color, qty, type, style }) {
+export default function RackCard({ rackId, cellsArr, rackName }) {
   return (
-    <Box borderRadius="md" my={2} background={"#333333"} py={2} w={`95%`} ml={'2.5%'}>
+    <Box
+      borderRadius="md"
+      my={2}
+      background={"#333333"}
+      py={2}
+      w={`95%`}
+      ml={"2.5%"}
+    >
       <VStack space="4" divider={<Divider />}>
-        <Box px="4" display={"flex"} flexDir={"row"} minH={"100px"}>
+        <Box px="4" display={"flex"} flexDir={"row"} minH={"100px"} minW={'300px'}>
           <Box display={"flex"} flexDir={"column"}>
             <Box display={"flex"} flexDir={"row"}>
+            <FontAwesome name="table" size={40} color={"#f3f4f6"} style={{marginRight: 20}}/>
               <Text color={"white"} fontWeight={600} fontSize={20} mr={5}>
-                {name}
+                {`${rackName}`}
               </Text>
             </Box>
             <Box
@@ -28,33 +36,20 @@ export default function Card({ name, color, qty, type, style }) {
                 borderRadius="md"
                 mr={1}
               >
-                {type}
+                ID: {rackId}
               </Text>
               <Text
                 color={"white"}
                 py={0.5}
                 px={1}
-                bg={"#4285f4"}
+                bg={"#c5221f"}
                 borderRadius="md"
                 mr={1}
               >
-                Style: {style}
-              </Text>
-              <Text
-                color={"white"}
-                py={0.5}
-                px={1}
-                bg={"#16a05d"}
-                borderRadius="md"
-                mt={1}
-              >
-                Color: {color}
+                {cellsArr?.length} Cells
               </Text>
             </Box>
           </Box>
-          <Text color={"white"} fontWeight={600} mr={5} ml={'auto'}>
-            Qty: {qty}
-          </Text>
         </Box>
       </VStack>
     </Box>

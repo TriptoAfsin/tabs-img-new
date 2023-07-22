@@ -1,5 +1,5 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Tabs } from "expo-router";
+import { Link, Tabs } from "expo-router";
 import { Pressable, useColorScheme, Modal, View, StyleSheet} from "react-native";
 import { useState, useRef } from "react";
 import { Box, Text} from "native-base";
@@ -83,9 +83,27 @@ export default function TabLayout() {
           name="index"
           options={{
             title: "Products",
-            tabBarIcon: ({ color }) => <TabBarIcon name="dropbox" color={color} />,
+            tabBarIcon: ({ color }) => {
+              return (
+                <>
+                <TabBarIcon name="dropbox" color={color} />
+                </>
+              )
+          },
             headerRight: () => (
-              <>
+              <Box display={'flex'} flexDir={'row'}> 
+               <Link href="/search" asChild>
+               <Pressable>
+                  {({ pressed }) => (
+                    <FontAwesome
+                      name="search"
+                      size={35}
+                      color={'#f3f4f6'}
+                      style={{ marginRight: 30, opacity: pressed ? 0.5 : 1 }}
+                    />
+                  )}
+                </Pressable>
+               </Link>
                 <Pressable>
                   {({ pressed }) => (
                     <FontAwesome
@@ -99,7 +117,7 @@ export default function TabLayout() {
                     />
                   )}
                 </Pressable>
-              </>
+              </Box>
             ),
           }}
         />
