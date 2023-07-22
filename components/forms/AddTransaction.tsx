@@ -1,53 +1,43 @@
-import React from "react";
-import {
-  Input,
-  FormControl,
-  Button,
-  Box,
-  Divider,
-  TextArea,
-  Text,
-} from "native-base";
+import React, {useState} from "react";
+import { Input, FormControl, Button, Box, Divider, Text } from "native-base";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAddProduct } from "../../hooks/api/useAddProduct";
+import { useAddTransaction } from "../../hooks/api/useAddTransaction";
 import { useQueryClient } from "@tanstack/react-query";
 import { Select } from "native-base";
 import { useToast } from "native-base";
+import { useGetAllProducts } from "../../hooks/api/useGetAllProducts";
+import Autocomplete from "native-base-autocomplete";
 
-function AddTransaction({ ref, setModal }) {
+function AddTransaction({ setModal, cellId }) {
+  const [prodId, setProdId] = useState<any>(null)
+  const {
+    isLoading: isAllProductsLoading,
+    data: allProductsData,
+    refetch: refetchAllProducts,
+  } = useGetAllProducts();
+  console.log(allProductsData?.data);
   const toast = useToast();
   const queryClient = useQueryClient();
   const productSchema = yup.object().shape({
-    name: yup.string().min(2).required(),
-    color: yup.string().min(2).required(),
-    type: yup.string().min(2).required(),
-    po: yup.string().min(1).required(),
-    style: yup.string().min(1).required(),
-    total_qty: yup.string().min(1).required(),
-    other_info: yup.string().min(1).optional().nullable(),
+    action_type: yup.string().min(2).required(),
+    product: yup.string().min(2).required(),
+    qty: yup.number().min(1).required(),
   });
-  const { mutate: productMutate, isLoading } = useAddProduct(
+  const { mutate: transactionMutate, isLoading } = useAddTransaction(
     () => {
       console.log("success");
       toast.show({
         render: () => {
           return (
-            <Box
-              bg="#0f9d58"
-              px="2"
-              py="1"
-              rounded="sm"
-              mb={5}
-              color={"white"}
-            >
-              <Text color={"white"}>Product Added Successfully 😁</Text>
+            <Box bg="#0f9d58" px="2" py="1" rounded="sm" mb={5} color={"white"}>
+              <Text color={"white"}>Transaction Added Successfully 😁</Text>
             </Box>
           );
         },
-        placement: "top"
+        placement: "top",
       });
       setModal(false);
     },
@@ -68,7 +58,7 @@ function AddTransaction({ ref, setModal }) {
             </Box>
           );
         },
-        placement: "top"
+        placement: "top",
       });
     },
     queryClient
@@ -88,56 +78,12 @@ function AddTransaction({ ref, setModal }) {
   });
   const onSubmit = (data: any) => {
     console.log("submiting with ", data);
-    productMutate(data);
+    transactionMutate(data);
   };
   return (
     <Box display={"flex"} flexDir={"column"}>
       <FormControl>
-        <FormControl.Label>Name</FormControl.Label>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              onBlur={onBlur}
-              placeholder="New Product"
-              type="text"
-              onChangeText={val => onChange(val)}
-              value={value}
-            />
-          )}
-          name="name"
-          defaultValue=""
-        />
-        {errors.name && (
-          <FormControl.ErrorMessage color={"red.500"}>
-            <Text color={"red.500"}>{errors.name.message}</Text>
-          </FormControl.ErrorMessage>
-        )}
-      </FormControl>
-      <FormControl mt="3">
-        <FormControl.Label>Color</FormControl.Label>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              onBlur={onBlur}
-              placeholder="Product Color"
-              type="text"
-              onChangeText={val => onChange(val)}
-              value={value}
-            />
-          )}
-          name="color"
-          defaultValue=""
-        />
-        {errors.color && (
-          <FormControl.ErrorMessage color={"red.500"}>
-            <Text color={"red.500"}>{errors.color.message}</Text>
-          </FormControl.ErrorMessage>
-        )}
-      </FormControl>
-      <FormControl mt="3">
-        <FormControl.Label>Type</FormControl.Label>
+        <FormControl.Label>Select Product</FormControl.Label>
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -145,8 +91,48 @@ function AddTransaction({ ref, setModal }) {
               <Select
                 selectedValue={value}
                 minWidth="200"
-                accessibilityLabel="Choose Product Type"
-                placeholder="Choose Product Type"
+                accessibilityLabel="Select Product"
+                placeholder="Select Product"
+                _selectedItem={{
+                  bg: "teal.600",
+                  endIcon: <FontAwesome name="arrow-circle-o-down" size={15} />,
+                }}
+                mt={1}
+                onValueChange={val => {
+                  const prodId = val.split("-")[0]
+                  console.log(prodId)
+                  setProdId(parseInt(prodId))
+                  onChange(val)
+                }}
+              >
+                {
+                  allProductsData?.data?.products?.map((item) => (
+                    <Select.Item label={`${item?.product_id}-${item?.name}`} value={`${item?.product_id}-${item?.name}`} />
+                  ))
+                }
+              </Select>
+            </>
+          )}
+          name="product"
+        />
+        {errors.product && (
+          <FormControl.ErrorMessage color={"red.500"}>
+            <Text color={"red.500"}>{errors.product.message}</Text>
+          </FormControl.ErrorMessage>
+        )}
+      </FormControl>
+
+      <FormControl mt="3">
+        <FormControl.Label>Action Type</FormControl.Label>
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <>
+              <Select
+                selectedValue={value}
+                minWidth="200"
+                accessibilityLabel="Choose Action Type"
+                placeholder="Choose Action Type"
                 _selectedItem={{
                   bg: "teal.600",
                   endIcon: <FontAwesome name="arrow-circle-o-down" size={15} />,
@@ -154,21 +140,17 @@ function AddTransaction({ ref, setModal }) {
                 mt={1}
                 onValueChange={val => onChange(val)}
               >
-                <Select.Item label="Yarn" value="Yarn" />
-                <Select.Item label="Dyes" value="Dyes" />
-                <Select.Item label="Accessories" value="Accessories" />
-                <Select.Item label="Fabric" value="Fabric" />
-                <Select.Item label="Needle" value="Needle" />
-                <Select.Item label="Others" value="Others" />
+                <Select.Item label="Add" value="add" />
+                <Select.Item label="Remove" value="remove" />
               </Select>
             </>
           )}
-          name="type"
+          name="action_type"
           defaultValue=""
         />
-        {errors.type && (
+        {errors.action_type && (
           <FormControl.ErrorMessage color={"red.500"}>
-            <Text color={"red.500"}>{errors.type.message}</Text>
+            <Text color={"red.500"}>{errors.action_type.message}</Text>
           </FormControl.ErrorMessage>
         )}
       </FormControl>
@@ -181,86 +163,19 @@ function AddTransaction({ ref, setModal }) {
               onBlur={onBlur}
               placeholder="Product Quantity"
               keyboardType="numeric"
-              onChangeText={val => onChange(val)}
-              value={value}
+              onChangeText={val => onChange(parseInt(val))}
+              value={value?.toString()}
             />
           )}
-          name="total_qty"
-          defaultValue=""
+          name="qty"
+          
         />
-        {errors.total_qty && (
+        {errors.qty && (
           <FormControl.ErrorMessage color={"red.500"}>
-            <Text color={"red.500"}>{errors.total_qty.message}</Text>
+            <Text color={"red.500"}>{errors.qty.message}</Text>
           </FormControl.ErrorMessage>
         )}
       </FormControl>
-      <FormControl mt="3">
-        <FormControl.Label>Style</FormControl.Label>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              onBlur={onBlur}
-              placeholder="Product Style"
-              type="text"
-              onChangeText={val => onChange(val)}
-              value={value}
-            />
-          )}
-          name="style"
-          defaultValue=""
-        />
-        {errors.style && (
-          <FormControl.ErrorMessage color={"red.500"}>
-            <Text color={"red.500"}>{errors.style.message}</Text>
-          </FormControl.ErrorMessage>
-        )}
-      </FormControl>
-      <FormControl mt="3">
-        <FormControl.Label>PO</FormControl.Label>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              onBlur={onBlur}
-              placeholder="PO"
-              type="text"
-              onChangeText={val => onChange(val)}
-              value={value}
-            />
-          )}
-          name="po"
-          defaultValue=""
-        />
-        {errors.po && (
-          <FormControl.ErrorMessage color={"red.500"}>
-            <Text color={"red.500"}>{errors.po.message}</Text>
-          </FormControl.ErrorMessage>
-        )}
-      </FormControl>
-      <>
-        <FormControl.Label>Other Info</FormControl.Label>
-        <Box alignItems="center" w="100%">
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextArea
-                h={20}
-                w="100%"
-                maxW="300"
-                autoCompleteType={true}
-                onBlur={onBlur}
-                placeholder="Other Info"
-                type="text"
-                onChangeText={val => onChange(val)}
-                value={value}
-              />
-            )}
-            name="other_info"
-            defaultValue=""
-          />
-        </Box>
-      </>
       <Divider />
       <Box
         display={"flex"}
@@ -275,18 +190,15 @@ function AddTransaction({ ref, setModal }) {
             colorScheme="success"
             isLoading={isLoading}
             onPress={() => {
-              productMutate({
-                name: getValues("name"),
-                color: getValues("color"),
-                style: getValues("style"),
-                total_qty: getValues("total_qty"),
-                other_info: getValues("other_info"),
-                type: getValues("type"),
-                po: getValues("po"),
+              transactionMutate({
+                cell_id: cellId,
+                action_type: getValues("action_type"),
+                product_id: prodId,
+                qty: getValues("qty"),
               });
             }}
           >
-            Add Product
+            Add
           </Button>
         </Button.Group>
       </Box>
