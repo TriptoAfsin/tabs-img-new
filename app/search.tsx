@@ -58,7 +58,7 @@ const Search = () => {
     data: cellsData,
     refetch: refetchCells,
   } = useGetProdCells(prodId);
-  console.log('cell', cellsData)
+  console.log("cell", cellsData?.data?.availableIn);
   return (
     <>
       <Modal
@@ -88,31 +88,28 @@ const Search = () => {
               </Pressable>
             </Box>
             <Box display={"flex"} flexDir={"row"} flexWrap={"wrap"} mt={10}>
-              {isFindCellsLoading ? (
-                <Spinner color="emerald.500" size="lg" mt={10} />
-              ) : (
-                cellsData?.data?.availableIn?.split(",")?.map(item => (
-                  <Pressable>
-                    <Box
-                      display={"flex"}
-                      flexDir={"row"}
-                      justifyContent={"center"}
-                      alignItems={"center"}
-                      px={5}
-                      py={5}
-                      w={"120px"}
-                      height={"70px"}
-                      m={2}
-                      borderRadius={5}
-                      bgColor={"#4285f4"}
-                    >
-                      <Text color={"white"} fontWeight={600}>
-                        Cell {item}
-                      </Text>
-                    </Box>
-                  </Pressable>
-                ))
-              )}
+              {cellsData?.data?.availableIn?.map(item => (
+                <Pressable>
+                  <Box
+                    display={"flex"}
+                    flexDir={"row"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    px={5}
+                    py={5}
+                    w={"120px"}
+                    height={"70px"}
+                    m={2}
+                    borderRadius={5}
+                    bgColor={"#4285f4"}
+                    key={item}
+                  >
+                    <Text color={"white"} fontWeight={600}>
+                      Cell {item}
+                    </Text>
+                  </Box>
+                </Pressable>
+              ))}
             </Box>
           </View>
         </View>
@@ -120,7 +117,7 @@ const Search = () => {
       <Box display={"flex"} flexDir={"column"} alignItems={"center"}>
         <Box display={"flex"} flexDir={"row"} flexWrap={"wrap"}>
           <Select
-            selectedValue={""}
+            selectedValue={prodType}
             minWidth="200"
             color={"white"}
             accessibilityLabel="Choose Product Type"
@@ -130,7 +127,9 @@ const Search = () => {
               endIcon: <FontAwesome name="arrow-circle-o-down" size={15} />,
             }}
             mt={1}
-            onValueChange={val => setProdType(val)}
+            onValueChange={val => {
+              setProdType(val);
+            }}
           >
             <Select.Item label="Yarn" value="Yarn" />
             <Select.Item label="Dyes" value="Dyes" />
@@ -147,14 +146,23 @@ const Search = () => {
           mt={5}
           color={"white"}
           py={2}
-          onChangeText={text => setProdName(text)}
+          onChangeText={text => {
+            setProdName(text);
+            if (prodType !== "" && prodName !== "") {
+              refetchSearch();
+            }
+          }}
         />
         <Box display={"flex"} flexDir={"column"} alignItems={"center"} mt={5}>
           <Pressable>
             <Button
               colorScheme="success"
               // isLoading={isSearchLoading}
-              onPress={() => refetchSearch()}
+              onPress={() => {
+                if (prodType !== "" && prodName !== "") {
+                  refetchSearch();
+                }
+              }}
               leftIcon={
                 <FontAwesome name="search" size={20} color={"#f3f4f6"} />
               }
@@ -167,43 +175,40 @@ const Search = () => {
           <Text color={"white"} fontWeight={600} fontSize={18} mt={5} ml={4}>
             🔍 Search Results -{" "}
           </Text>
-          {isSearchLoading && prodType !== "" && prodName !== "" ? (
-            <Spinner color="emerald.500" size="lg" mt={10} />
-          ) : (
-            <>
-              <SafeAreaView>
-                <Box
-                  display={"flex"}
-                  flexDir={"column"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                >
-                  <FlatList
-                    data={searchedData?.data?.products}
-                    renderItem={({ item }) => (
-                      <Pressable
-                        onPress={() => {
-                          setProdId(item?.product_id);
-                          refetchCells();
-                          // setSelectedProduct(item);
-                          setModalVisible(true);
-                        }}
-                      >
-                        <Card
-                          name={item?.name}
-                          color={item?.color}
-                          qty={item?.total_qty}
-                          type={item?.type}
-                          style={item?.style}
-                        />
-                      </Pressable>
-                    )}
-                    keyExtractor={item => `${item?.id}-${item?.name}`}
-                  />
-                </Box>
-              </SafeAreaView>
-            </>
-          )}
+
+          <>
+            <SafeAreaView>
+              <Box
+                display={"flex"}
+                flexDir={"column"}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <FlatList
+                  data={searchedData?.data?.products}
+                  renderItem={({ item }) => (
+                    <Pressable
+                      onPress={() => {
+                        setProdId(item?.product_id);
+                        refetchCells();
+                        // setSelectedProduct(item);
+                        setModalVisible(true);
+                      }}
+                    >
+                      <Card
+                        name={item?.name}
+                        color={item?.color}
+                        qty={item?.total_qty}
+                        type={item?.type}
+                        style={item?.style}
+                      />
+                    </Pressable>
+                  )}
+                  keyExtractor={item => `${item?.id}-${item?.name}`}
+                />
+              </Box>
+            </SafeAreaView>
+          </>
         </Box>
       </Box>
     </>
