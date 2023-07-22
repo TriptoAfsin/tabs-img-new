@@ -77,25 +77,35 @@ export default function RackDetails() {
             </Box>
             <Box display={"flex"} flexDir={"row"} flexWrap={"wrap"} mt={10}>
               {selectedRack?.cells?.split(",")?.map(item => (
-                <Link href={`/cell-details/${item}`} asChild>
-                  <Box
-                    display={"flex"}
-                    flexDir={"row"}
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                    px={5}
-                    py={5}
-                    w={"120px"}
-                    height={"50px"}
-                    m={2}
-                    borderRadius={5}
-                    bgColor={'#4285f4'}
+                <Pressable>
+                  <Link
+                    href={{
+                      pathname: "/cell-details/[id]",
+                      params: { id: item }
+                    }}
+                    asChild
+
+                    onPress={() => setModalVisible(false)}
                   >
-                    <Text color={"white"} fontWeight={600}>
-                      {item}
-                    </Text>
-                  </Box>
-                </Link>
+                    <Box
+                      display={"flex"}
+                      flexDir={"row"}
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                      px={5}
+                      py={5}
+                      w={"120px"}
+                      height={"50px"}
+                      m={2}
+                      borderRadius={5}
+                      bgColor={"#4285f4"}
+                    >
+                      <Text color={"white"} fontWeight={600}>
+                        {item}
+                      </Text>
+                    </Box>
+                  </Link>
+                </Pressable>
               ))}
             </Box>
           </View>
