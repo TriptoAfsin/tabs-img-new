@@ -15,7 +15,7 @@ export const useProductSearch = (query) => {
       );
     },
     {
-      enabled: false,
+      enabled: true,
     }
   );
 };

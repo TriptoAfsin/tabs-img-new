@@ -1,5 +1,5 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Link, Tabs } from "expo-router";
+import { Link, Tabs, useRouter } from "expo-router";
 import { Pressable, useColorScheme, Modal, View, StyleSheet} from "react-native";
 import { useState, useRef } from "react";
 import { Box, Text} from "native-base";
@@ -15,6 +15,7 @@ function TabBarIcon(props) {
 }
 
 export default function TabLayout() {
+  const router = useRouter();
   const colorScheme = useColorScheme();
   const [modalVisible, setModalVisible] = useState(false);
   const initialRef = useRef(null);
@@ -93,7 +94,7 @@ export default function TabLayout() {
             headerRight: () => (
               <Box display={'flex'} flexDir={'row'}> 
                <Link href="/search" asChild>
-               <Pressable>
+               <Pressable onPress={() => router.push("/search")}>
                   {({ pressed }) => (
                     <FontAwesome
                       name="search"

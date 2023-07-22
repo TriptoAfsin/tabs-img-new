@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Spinner } from "native-base";
 import { useGetRacks } from "../hooks/api/useGetRacks";
+import { ScrollView } from 'react-native-virtualized-view';
 import {
   FlatList,
   Pressable,
@@ -12,9 +13,10 @@ import {
 import RackCard from "../components/RackCard";
 import { Text } from "native-base";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Link, Tabs } from "expo-router";
+import { Link, Tabs, useRouter } from "expo-router";
 
 export default function RackDetails() {
+  const router = useRouter();
   const {
     isLoading: isRacksLoading,
     data: allRacksData,
@@ -77,14 +79,15 @@ export default function RackDetails() {
             </Box>
             <Box display={"flex"} flexDir={"row"} flexWrap={"wrap"} mt={10}>
               {selectedRack?.cells?.split(",")?.map(item => (
-                <Pressable>
+                <Pressable
+                onPress={() => {
+                  router.push(`/cell-details/${item}`)
+                  setModalVisible(false)
+                }}
+                >
                   <Link
-                    href={{
-                      pathname: "/cell-details/[id]",
-                      params: { id: item }
-                    }}
+                    href={`/cell-details/${item}`}
                     asChild
-
                     onPress={() => setModalVisible(false)}
                   >
                     <Box
@@ -95,7 +98,7 @@ export default function RackDetails() {
                       px={5}
                       py={5}
                       w={"120px"}
-                      height={"50px"}
+                      height={"70px"}
                       m={2}
                       borderRadius={5}
                       bgColor={"#4285f4"}
@@ -111,12 +114,12 @@ export default function RackDetails() {
           </View>
         </View>
       </Modal>
-      <Box display={"flex"} flexDir={"column"}>
+      <Box display={"flex"} flexDir={"column"} w={'100%'} bg={'black'}>
         {isRacksLoading ? (
           <Spinner color="emerald.500" size="lg" mt={10} />
         ) : (
           <>
-            <SafeAreaView>
+            <ScrollView>
               <Box
                 display={"flex"}
                 flexDir={"column"}
@@ -142,7 +145,7 @@ export default function RackDetails() {
                   keyExtractor={item => `${item?.rack_id}-${item?.rack_name}`}
                 />
               </Box>
-            </SafeAreaView>
+            </ScrollView>
           </>
         )}
       </Box>
