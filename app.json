@@ -12,7 +12,7 @@
     },
     "android": {
       "package": "com.tabsIMS.triptex",
-      "versionCode": 3,
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/tabs.png",
         "backgroundColor": "#1e2227"
