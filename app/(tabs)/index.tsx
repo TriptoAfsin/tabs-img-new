@@ -1,17 +1,33 @@
 import { StyleSheet } from "react-native";
-
-import EditScreenInfo from "../../components/EditScreenInfo";
-import { Text, View } from "../../components/Themed";
-import { Box, Button } from "native-base";
-import { Link } from "expo-router";
+import { View } from "../../components/Themed";
 import AllProducts from "../products";
-import { ScrollView } from 'react-native-virtualized-view';
+import { RefreshControl } from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
+import { useGetAllProducts } from "../../hooks/api/useGetAllProducts";
 
 export default function TabOneScreen() {
+  const {
+    isLoading: isAllProductsLoading,
+    data: allProductsData,
+    refetch: refetchAllProducts,
+  } = useGetAllProducts();
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <AllProducts />
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={isAllProductsLoading}
+            onRefresh={() => {
+              console.log("on refresh");
+              refetchAllProducts();
+            }}
+          />
+        }
+      >
+        <AllProducts
+          allProductsData={allProductsData}
+          isAllProductsLoading={isAllProductsLoading}
+        />
       </ScrollView>
     </View>
   );
@@ -21,7 +37,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: '#202020',
+    backgroundColor: "#202020",
     justifyContent: "center",
   },
   title: {

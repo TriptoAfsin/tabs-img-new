@@ -10,9 +10,6 @@ export const useGetAllProducts = () => {
       return axios.get(
         `${baseUrl}/thesis/products`,
       );
-    },
-    {
-      refetchInterval: 10000
     }
   );
 };

@@ -3,21 +3,15 @@ import { Box, Pressable, Spinner } from "native-base";
 import { useGetAllProducts } from "../hooks/api/useGetAllProducts";
 import { useState, useRef } from "react";
 import Card from "../components/Crad";
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  FlatList,
-  Modal,
-} from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
+import { View, StyleSheet, SafeAreaView, FlatList, Modal } from "react-native";
 import UpdateProduct from "../components/forms/UpdateProduct";
 import { Text } from "native-base";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 // // OR
 // import { ScrollView, FlatList } from 'react-native-gesture-handler';
 
-export default function AllProducts() {
+export default function AllProducts({ allProductsData, isAllProductsLoading }) {
   const initialRef = useRef(null);
   const finalRef = useRef(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -45,12 +39,6 @@ export default function AllProducts() {
       elevation: 5,
     },
   });
-  const {
-    isLoading: isAllProductsLoading,
-    data: allProductsData,
-    refetch: refetchAllProducts,
-  } = useGetAllProducts();
-  console.log(allProductsData?.data);
   return (
     <>
       <Modal
@@ -66,13 +54,18 @@ export default function AllProducts() {
         <View style={styles.modalView}>
           {/* <Modal.CloseButton /> */}
           <View>
-            <Box display={'flex'} flexDir={'row'}>
-            <Text fontSize={20} fontWeight={600} minW={'90%'}>
-              Update Product
-            </Text>
-            <Pressable>
-                <FontAwesome name="window-close" size={30} color={"black"} onPress={() => setModalVisible(false)}/>
-            </Pressable>
+            <Box display={"flex"} flexDir={"row"}>
+              <Text fontSize={20} fontWeight={600} minW={"90%"}>
+                Update Product
+              </Text>
+              <Pressable>
+                <FontAwesome
+                  name="window-close"
+                  size={30}
+                  color={"black"}
+                  onPress={() => setModalVisible(false)}
+                />
+              </Pressable>
             </Box>
             <UpdateProduct
               ref={initialRef}
@@ -84,7 +77,7 @@ export default function AllProducts() {
       </Modal>
       <Box display={"flex"} flexDir={"column"} bg={"#202020"}>
         {isAllProductsLoading ? (
-          <Spinner color="emerald.500" size="lg" mt={10}/>
+          <Spinner color="emerald.500" size="lg" mt={10} />
         ) : (
           <>
             <SafeAreaView>
