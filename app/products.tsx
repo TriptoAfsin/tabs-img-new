@@ -101,7 +101,7 @@ export default function AllProducts({ allProductsData, isAllProductsLoading }) {
                       />
                     </Pressable>
                   )}
-                  keyExtractor={item => `${item?.id}-${item?.name}`}
+                  keyExtractor={item => `${item?.product_id}-${item?.name}`}
                 />
               </Box>
             </SafeAreaView>

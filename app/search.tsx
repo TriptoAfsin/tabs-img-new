@@ -132,6 +132,7 @@ const Search = () => {
             }}
           >
             <Select.Item label="Yarn" value="Yarn" />
+            <Select.Item label="Thread" value="Thread" />
             <Select.Item label="Dyes" value="Dyes" />
             <Select.Item label="Fabric" value="Fabric" />
             <Select.Item label="Accessories" value="Accessories" />
@@ -204,7 +205,7 @@ const Search = () => {
                       />
                     </Pressable>
                   )}
-                  keyExtractor={item => `${item?.id}-${item?.name}`}
+                  keyExtractor={item => `${item?.product_id}-${item?.name}`}
                 />
               </Box>
             </SafeAreaView>
