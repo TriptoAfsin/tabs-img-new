@@ -1,9 +1,8 @@
-import { StyleSheet } from "react-native";
-import { View } from "../../components/Themed";
-import AllProducts from "../products";
-import { RefreshControl } from "react-native";
+import { RefreshControl, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-virtualized-view";
+import { View } from "../../components/Themed";
 import { useGetAllProducts } from "../../hooks/api/useGetAllProducts";
+import AllProducts from "../products";
 
 export default function TabOneScreen() {
   const {

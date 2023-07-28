@@ -1,5 +1,5 @@
 const commaFormat = (number: number | bigint) => {
-  const interNumberFormat = new Intl.NumberFormat('en-IN', {
+  const interNumberFormat = new Intl.NumberFormat("en-IN", {
     maximumSignificantDigits: 7,
   });
   try {

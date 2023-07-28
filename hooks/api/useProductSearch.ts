@@ -3,7 +3,7 @@ import axios from "axios";
 import querystring from "query-string";
 const baseUrl = `https://api.triptex.me`;
 
-export const useProductSearch = (query) => {
+export const useProductSearch = query => {
   return useQuery(
     ["product-search", query],
     () => {

@@ -1,13 +1,9 @@
-import React from "react";
-import { Box, Pressable, Spinner } from "native-base";
-import { useGetAllProducts } from "../hooks/api/useGetAllProducts";
-import { useState, useRef } from "react";
-import Card from "../components/Crad";
-import { ScrollView } from "react-native-virtualized-view";
-import { View, StyleSheet, SafeAreaView, FlatList, Modal } from "react-native";
-import UpdateProduct from "../components/forms/UpdateProduct";
-import { Text } from "native-base";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Box, Pressable, Spinner, Text } from "native-base";
+import React, { useRef, useState } from "react";
+import { FlatList, Modal, SafeAreaView, StyleSheet, View } from "react-native";
+import Card from "../components/Crad";
+import UpdateProduct from "../components/forms/UpdateProduct";
 // // OR
 // import { ScrollView, FlatList } from 'react-native-gesture-handler';
 

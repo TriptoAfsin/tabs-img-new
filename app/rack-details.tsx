@@ -1,19 +1,11 @@
-import React, { useState } from "react";
-import { Box, Spinner } from "native-base";
-import { useGetRacks } from "../hooks/api/useGetRacks";
-import { ScrollView } from 'react-native-virtualized-view';
-import {
-  FlatList,
-  Pressable,
-  SafeAreaView,
-  Modal,
-  StyleSheet,
-  View,
-} from "react-native";
-import RackCard from "../components/RackCard";
-import { Text } from "native-base";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Link, Tabs, useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
+import { Box, Spinner, Text } from "native-base";
+import React, { useState } from "react";
+import { FlatList, Modal, Pressable, StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
+import RackCard from "../components/RackCard";
+import { useGetRacks } from "../hooks/api/useGetRacks";
 
 export default function RackDetails() {
   const router = useRouter();
@@ -80,10 +72,10 @@ export default function RackDetails() {
             <Box display={"flex"} flexDir={"row"} flexWrap={"wrap"} mt={10}>
               {selectedRack?.cells?.split(",")?.map(item => (
                 <Pressable
-                onPress={() => {
-                  router.push(`/cell-details/${item}`)
-                  setModalVisible(false)
-                }}
+                  onPress={() => {
+                    router.push(`/cell-details/${item}`);
+                    setModalVisible(false);
+                  }}
                 >
                   <Link
                     href={`/cell-details/${item}`}
@@ -114,7 +106,7 @@ export default function RackDetails() {
           </View>
         </View>
       </Modal>
-      <Box display={"flex"} flexDir={"column"} w={'100%'} bg={'black'}>
+      <Box display={"flex"} flexDir={"column"} w={"100%"} bg={"black"}>
         {isRacksLoading ? (
           <Spinner color="emerald.500" size="lg" mt={10} />
         ) : (

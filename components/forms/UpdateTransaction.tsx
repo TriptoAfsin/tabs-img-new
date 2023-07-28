@@ -1,16 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { Input, FormControl, Button, Box, Divider, Text } from "native-base";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useForm, Controller } from "react-hook-form";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useUpdateTransaction } from "../../hooks/api/useUpdateTransaction";
 import { useQueryClient } from "@tanstack/react-query";
-import { Select } from "native-base";
-import { useToast } from "native-base";
+import {
+  Box,
+  Button,
+  Divider,
+  FormControl,
+  Input,
+  Select,
+  Text,
+  useToast,
+} from "native-base";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { ScrollView } from "react-native-virtualized-view";
+import * as yup from "yup";
 import { useGetAllProducts } from "../../hooks/api/useGetAllProducts";
 import { useGetProductById } from "../../hooks/api/useGetProductById";
-import { ScrollView } from "react-native-virtualized-view";
+import { useUpdateTransaction } from "../../hooks/api/useUpdateTransaction";
 
 function UpdateTransaction({ setModal, oldData }) {
   console.log(oldData);

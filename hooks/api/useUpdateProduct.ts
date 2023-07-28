@@ -20,7 +20,11 @@ const handleUpdateProduct = async (values: any) => {
   });
 };
 
-export const useUpdateProduct = (onSuccessFunc: any, onErrorFunc: any, queryClient: any) => {
+export const useUpdateProduct = (
+  onSuccessFunc: any,
+  onErrorFunc: any,
+  queryClient: any
+) => {
   return useMutation(handleUpdateProduct, {
     onSuccess: onSuccessFunc,
     onError: onErrorFunc,

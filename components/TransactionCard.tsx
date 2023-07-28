@@ -1,5 +1,5 @@
+import { Box, Divider, Text, VStack } from "native-base";
 import React from "react";
-import { VStack, Box, Divider, Text } from "native-base";
 import { useGetProductById } from "../hooks/api/useGetProductById";
 
 export default function TransactionCard({
@@ -46,25 +46,30 @@ export default function TransactionCard({
                 bg={"#000000"}
                 borderRadius="md"
                 mr={1}
-                minW={'50px'}
-                textAlign={'center'}
+                minW={"50px"}
+                textAlign={"center"}
               >
                 {actionType?.toUpperCase()}
               </Text>
             </Box>
             <Text
-                color={"white"}
-                py={0.5}
-                px={1}
-                bg={""}
-                borderRadius="md"
-                mr={1}
-                
-              >
-             🕑{timestamp}
-              </Text>
+              color={"white"}
+              py={0.5}
+              px={1}
+              bg={""}
+              borderRadius="md"
+              mr={1}
+            >
+              🕑{timestamp}
+            </Text>
           </Box>
-          <Text color={"white"} fontWeight={600} mr={5} ml={"auto"} minW={'50px'}>
+          <Text
+            color={"white"}
+            fontWeight={600}
+            mr={5}
+            ml={"auto"}
+            minW={"50px"}
+          >
             Qty: {qty}
           </Text>
         </Box>

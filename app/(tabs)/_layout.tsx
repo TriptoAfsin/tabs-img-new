@@ -1,11 +1,17 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs, useRouter } from "expo-router";
-import { Pressable, useColorScheme, Modal, View, StyleSheet} from "react-native";
-import { useState, useRef } from "react";
-import { Box, Text} from "native-base";
+import { Box, Text } from "native-base";
+import { useRef, useState } from "react";
+import {
+  Modal,
+  Pressable,
+  StyleSheet,
+  View,
+  useColorScheme,
+} from "react-native";
 
-import Colors from "../../constants/Colors";
 import AddProduct from "../../components/forms/AddProduct";
+import Colors from "../../constants/Colors";
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -60,18 +66,20 @@ export default function TabLayout() {
         <View style={styles.modalView}>
           {/* <Modal.CloseButton /> */}
           <View>
-            <Box display={'flex'} flexDir={'row'}>
-            <Text fontSize={20} fontWeight={600} minW={'90%'}>
-              Add Product
-            </Text>
-            <Pressable>
-                <FontAwesome name="window-close" size={30} color={"black"} onPress={() => setModalVisible(false)}/>
-            </Pressable>
+            <Box display={"flex"} flexDir={"row"}>
+              <Text fontSize={20} fontWeight={600} minW={"90%"}>
+                Add Product
+              </Text>
+              <Pressable>
+                <FontAwesome
+                  name="window-close"
+                  size={30}
+                  color={"black"}
+                  onPress={() => setModalVisible(false)}
+                />
+              </Pressable>
             </Box>
-            <AddProduct
-              ref={initialRef}
-              setModal={setModalVisible}
-            />
+            <AddProduct ref={initialRef} setModal={setModalVisible} />
           </View>
         </View>
       </Modal>
@@ -87,24 +95,24 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => {
               return (
                 <>
-                <TabBarIcon name="dropbox" color={color} />
+                  <TabBarIcon name="dropbox" color={color} />
                 </>
-              )
-          },
+              );
+            },
             headerRight: () => (
-              <Box display={'flex'} flexDir={'row'}> 
-               <Link href="/search" asChild>
-               <Pressable onPress={() => router.push("/search")}>
-                  {({ pressed }) => (
-                    <FontAwesome
-                      name="search"
-                      size={35}
-                      color={'#f3f4f6'}
-                      style={{ marginRight: 30, opacity: pressed ? 0.5 : 1 }}
-                    />
-                  )}
-                </Pressable>
-               </Link>
+              <Box display={"flex"} flexDir={"row"}>
+                <Link href="/search" asChild>
+                  <Pressable onPress={() => router.push("/search")}>
+                    {({ pressed }) => (
+                      <FontAwesome
+                        name="search"
+                        size={35}
+                        color={"#f3f4f6"}
+                        style={{ marginRight: 30, opacity: pressed ? 0.5 : 1 }}
+                      />
+                    )}
+                  </Pressable>
+                </Link>
                 <Pressable>
                   {({ pressed }) => (
                     <FontAwesome
@@ -113,7 +121,7 @@ export default function TabLayout() {
                       }}
                       name="plus"
                       size={35}
-                      color={'#f3f4f6'}
+                      color={"#f3f4f6"}
                       style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                     />
                   )}
@@ -126,7 +134,9 @@ export default function TabLayout() {
           name="two"
           options={{
             title: "Racks",
-            tabBarIcon: ({ color }) => <TabBarIcon name="table" color={color} />,
+            tabBarIcon: ({ color }) => (
+              <TabBarIcon name="table" color={color} />
+            ),
             headerRight: () => (
               <>
                 <Pressable>
@@ -134,7 +144,7 @@ export default function TabLayout() {
                     <FontAwesome
                       name="info-circle"
                       size={25}
-                      color={'#f3f4f6'}
+                      color={"#f3f4f6"}
                       style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                     />
                   )}

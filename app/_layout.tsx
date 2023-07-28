@@ -1,9 +1,5 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+import { DarkTheme, ThemeProvider } from "@react-navigation/native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useFonts } from "expo-font";
@@ -48,14 +44,18 @@ function RootLayoutNav() {
     <>
       <QueryClientProvider client={queryClient}>
         <NativeBaseProvider>
-          <ThemeProvider
-            value={DarkTheme}
-          >
+          <ThemeProvider value={DarkTheme}>
             <Stack>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="products" options={{ headerShown: true }} />
-              <Stack.Screen name="rack-details" options={{ headerShown: true }} />
-              <Stack.Screen name="product-details" options={{ headerShown: true }} />
+              <Stack.Screen
+                name="rack-details"
+                options={{ headerShown: true }}
+              />
+              <Stack.Screen
+                name="product-details"
+                options={{ headerShown: true }}
+              />
             </Stack>
           </ThemeProvider>
         </NativeBaseProvider>

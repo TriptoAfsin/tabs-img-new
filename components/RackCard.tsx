@@ -1,6 +1,6 @@
-import React from "react";
-import { VStack, Box, Divider, Text } from "native-base";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Box, Divider, Text, VStack } from "native-base";
+import React from "react";
 
 export default function RackCard({ rackId, cellsArr, rackName }) {
   return (
@@ -13,10 +13,21 @@ export default function RackCard({ rackId, cellsArr, rackName }) {
       ml={"2.5%"}
     >
       <VStack space="4" divider={<Divider />}>
-        <Box px="4" display={"flex"} flexDir={"row"} minH={"100px"} minW={'300px'}>
+        <Box
+          px="4"
+          display={"flex"}
+          flexDir={"row"}
+          minH={"100px"}
+          minW={"300px"}
+        >
           <Box display={"flex"} flexDir={"column"}>
             <Box display={"flex"} flexDir={"row"}>
-            <FontAwesome name="table" size={40} color={"#f3f4f6"} style={{marginRight: 20}}/>
+              <FontAwesome
+                name="table"
+                size={40}
+                color={"#f3f4f6"}
+                style={{ marginRight: 20 }}
+              />
               <Text color={"white"} fontWeight={600} fontSize={20} mr={5}>
                 {`${rackName}`}
               </Text>

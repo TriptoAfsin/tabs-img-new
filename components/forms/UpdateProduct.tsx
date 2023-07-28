@@ -156,6 +156,7 @@ function UpdateProduct({ ref, setModal, oldData }) {
                   onValueChange={val => onChange(val)}
                 >
                   <Select.Item label="Yarn" value="Yarn" />
+                  <Select.Item label="Thread" value="Thread" />
                   <Select.Item label="Dyes" value="Dyes" />
                   <Select.Item label="Accessories" value="Accessories" />
                   <Select.Item label="Fabric" value="Fabric" />

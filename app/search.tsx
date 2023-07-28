@@ -1,17 +1,17 @@
-import { useState } from "react";
-import { Input, Box, Button, Select, Spinner, Text } from "native-base";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Box, Button, Input, Select, Text } from "native-base";
+import { useState } from "react";
 import {
   FlatList,
+  Modal,
   Pressable,
   SafeAreaView,
   StyleSheet,
-  Modal,
   View,
 } from "react-native";
-import { useProductSearch } from "../hooks/api/useProductSearch";
-import { useGetProdCells } from "../hooks/api/useGetProdCells";
 import Card from "../components/Crad";
+import { useGetProdCells } from "../hooks/api/useGetProdCells";
+import { useProductSearch } from "../hooks/api/useProductSearch";
 
 const Search = () => {
   const [prodName, setProdName] = useState("");

@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import { Box, Button, Spinner, Text } from "native-base";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import dayjs from "dayjs";
 import { useLocalSearchParams } from "expo-router";
-import { useGetCellInfo } from "../../hooks/api/useGetCellInfo";
-import { ScrollView } from 'react-native-virtualized-view';
+import { Box, Button, Spinner, Text } from "native-base";
+import React, { useState } from "react";
 import {
   FlatList,
   Modal,
+  Pressable,
   SafeAreaView,
   StyleSheet,
   View,
-  Pressable,
 } from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { ScrollView } from "react-native-virtualized-view";
 import TransactionCard from "../../components/TransactionCard";
-import dayjs from "dayjs";
 import AddTransaction from "../../components/forms/AddTransaction";
 import UpdateTransaction from "../../components/forms/UpdateTransaction";
+import { useGetCellInfo } from "../../hooks/api/useGetCellInfo";
 
 function CellDetails() {
   const { id } = useLocalSearchParams();
@@ -79,7 +79,10 @@ function CellDetails() {
                 />
               </Pressable>
             </Box>
-            <AddTransaction setModal={setCreateModalVisible} cellId={parseInt(id?.toString())}/>
+            <AddTransaction
+              setModal={setCreateModalVisible}
+              cellId={parseInt(id?.toString())}
+            />
           </View>
         </View>
       </Modal>
@@ -109,78 +112,104 @@ function CellDetails() {
                 />
               </Pressable>
             </Box>
-            <UpdateTransaction setModal={setModalVisible} oldData={selectedTransaction}/>
+            <UpdateTransaction
+              setModal={setModalVisible}
+              oldData={selectedTransaction}
+            />
           </View>
         </View>
       </Modal>
-      <Box display={"flex"} flexDir={"column"} bg={'#010101'}>
+      <Box display={"flex"} flexDir={"column"} bg={"#010101"}>
         {isCellInfoLoading ? (
           <Spinner color="emerald.500" size="lg" mt={10} />
         ) : (
           <>
             <SafeAreaView>
-                <ScrollView>
-
-              <Box
-                display={"flex"}
-                flexDir={"column"}
-                alignItems={"center"}
-                justifyContent={"center"}
-                mt={5}
-              >
-                <>
-                  <Box display={"flex"} flexDirection={"row"} alignItems={"center"} justifyContent={'space-evenly'} width={'100%'}>
-                    <Text color={"white"} fontWeight={600} fontSize={22}>Cell ID: {id}</Text>
-                    <Pressable>
-                      <Button
-                        colorScheme="success"
-                        //    isLoading={isLoading}
-                        onPress={() => setCreateModalVisible(true)}
-                        leftIcon={
-                          <FontAwesome
-                            name="plus-circle"
-                            size={20}
-                            color={"#f3f4f6"}
-                            style={{ marginRight: 5 }}
-                          />
-                        }
+              <ScrollView>
+                <Box
+                  display={"flex"}
+                  flexDir={"column"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  mt={5}
+                >
+                  <>
+                    <Box
+                      display={"flex"}
+                      flexDirection={"row"}
+                      alignItems={"center"}
+                      justifyContent={"space-evenly"}
+                      width={"100%"}
+                    >
+                      <Text color={"white"} fontWeight={600} fontSize={22}>
+                        Cell ID: {id}
+                      </Text>
+                      <Pressable>
+                        <Button
+                          colorScheme="success"
+                          //    isLoading={isLoading}
+                          onPress={() => setCreateModalVisible(true)}
+                          leftIcon={
+                            <FontAwesome
+                              name="plus-circle"
+                              size={20}
+                              color={"#f3f4f6"}
+                              style={{ marginRight: 5 }}
+                            />
+                          }
+                        >
+                          Add
+                        </Button>
+                      </Pressable>
+                    </Box>
+                  </>
+                  {cellData?.data?.cellInfo?.transactions?.length > 0 ? (
+                    <>
+                      <Text
+                        color={"white"}
+                        fontWeight={600}
+                        fontSize={18}
+                        mt={5}
                       >
-                        Add
-                      </Button>
-                    </Pressable>
-                  </Box>
-                </>
-                {
-                    cellData?.data?.cellInfo?.transactions?.length > 0  ? (
-                <>
-                <Text color={"white"} fontWeight={600} fontSize={18} mt={5}>Transaction List - </Text>
-                <FlatList
-                  data={cellData?.data?.cellInfo?.transactions}
-                  renderItem={({ item }) => (
-                    <Pressable
-                      onPress={() => {
-                        setSelectedTransaction(item);
-                        setModalVisible(true);
-                      }}
-                    > 
-                      <TransactionCard
-                        actionType={item?.action_type}
-                        productId={item?.product_id}
-                        qty={item?.qty}
-                        timestamp={dayjs(item?.timestamp).format(
-                          "DD/MM/YYYY (h:ma)"
+                        Transaction List -{" "}
+                      </Text>
+                      <FlatList
+                        data={cellData?.data?.cellInfo?.transactions}
+                        renderItem={({ item }) => (
+                          <Pressable
+                            onPress={() => {
+                              setSelectedTransaction(item);
+                              setModalVisible(true);
+                            }}
+                          >
+                            <TransactionCard
+                              actionType={item?.action_type}
+                              productId={item?.product_id}
+                              qty={item?.qty}
+                              timestamp={dayjs(item?.timestamp).format(
+                                "DD/MM/YYYY (h:ma)"
+                              )}
+                              transactionId={item?.transactionId}
+                            />
+                          </Pressable>
                         )}
-                        transactionId={item?.transactionId}
+                        keyExtractor={item =>
+                          `${item?.transactionId}-${item?.action_type}`
+                        }
                       />
-                    </Pressable>
+                    </>
+                  ) : (
+                    <Text
+                      color={"#35363a"}
+                      fontWeight={600}
+                      fontSize={18}
+                      mt={5}
+                    >
+                      No Transactions
+                    </Text>
                   )}
-                  keyExtractor={item => `${item?.transactionId}-${item?.action_type}`}
-                />
-                </>
-                    ): <Text color={"#35363a"} fontWeight={600} fontSize={18} mt={5}>No Transactions</Text>
-                }
-              </Box>
-                </ScrollView>
+                </Box>
+              </ScrollView>
             </SafeAreaView>
           </>
         )}

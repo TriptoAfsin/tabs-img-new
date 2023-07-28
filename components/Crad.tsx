@@ -5,6 +5,7 @@ import commaFormat from "../app/utils/commaFormat";
 export default function Card({ name, color, qty, type = "", style }) {
   const units = {
     yarn: "yds",
+    thread: "yds",
     dyes: "gms",
     accessories: "pcs",
     fabric: "yds",
@@ -69,7 +70,6 @@ export default function Card({ name, color, qty, type = "", style }) {
                 px={1}
                 bg={"#16a05d"}
                 borderRadius="md"
-               
               >
                 Color: {color}
               </Text>
