@@ -1,22 +1,22 @@
-import React from "react";
-import {
-  Input,
-  FormControl,
-  Button,
-  Box,
-  Divider,
-  TextArea,
-  Text,
-} from "native-base";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useForm, Controller } from "react-hook-form";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAddProduct } from "../../hooks/api/useAddProduct";
 import { useQueryClient } from "@tanstack/react-query";
-import { Select } from "native-base";
-import { useToast } from "native-base";
+import {
+  Box,
+  Button,
+  Divider,
+  FormControl,
+  Input,
+  Select,
+  Text,
+  TextArea,
+  useToast,
+} from "native-base";
+import React from "react";
+import { Controller, useForm } from "react-hook-form";
 import { ScrollView } from "react-native-virtualized-view";
+import * as yup from "yup";
+import { useAddProduct } from "../../hooks/api/useAddProduct";
 
 function AddProduct({ ref, setModal }) {
   const toast = useToast();
@@ -80,10 +80,6 @@ function AddProduct({ ref, setModal }) {
   } = useForm({
     resolver: yupResolver(productSchema),
   });
-  const onSubmit = (data: any) => {
-    console.log("submiting with ", data);
-    productMutate(data);
-  };
   return (
     <ScrollView>
       <Box display={"flex"} flexDir={"column"}>
