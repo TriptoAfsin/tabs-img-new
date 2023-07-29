@@ -1,21 +1,32 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import querystring from "query-string";
+
 const baseUrl = `https://api.triptex.me`;
 
-export const useProductSearch = query => {
-  return useQuery(
-    ["product-search", query],
-    () => {
-      return axios.get(
-        `${baseUrl}/thesis/search/products?${querystring.stringify(query, {
-          arrayFormat: "comma",
-          skipEmptyString: true,
-        })}`
-      );
+const handleProductSearch = async (values: any) => {
+  const requestBody = {
+    name: values.name ? values.name : undefined,
+    type: values.type ? values.type : undefined,
+    style: values.style ? values.style : undefined,
+    po: values.po ? values.po : undefined,
+  };
+  return axios.post(`${baseUrl}/thesis/search/products`, requestBody, {
+    // headers: {
+    //   Authorization: `Bearer ${values?.token}`,
+    // },
+  });
+};
+
+export const useProductSearch = (
+  onSuccessFunc: any,
+  onErrorFunc: any,
+  queryClient: any
+) => {
+  return useMutation(handleProductSearch, {
+    onSuccess: onSuccessFunc,
+    onError: onErrorFunc,
+    onSettled: () => {
+      queryClient.invalidateQueries("create");
     },
-    {
-      enabled: false,
-    }
-  );
+  });
 };
