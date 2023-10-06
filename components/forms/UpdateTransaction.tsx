@@ -189,7 +189,13 @@ function UpdateTransaction({ setModal, oldData }) {
                 onBlur={onBlur}
                 placeholder="Product Quantity"
                 keyboardType="numeric"
-                onChangeText={val => onChange(parseInt(val))}
+                onChangeText={val => {
+                  if (val) {
+                    return onChange(parseInt(val));
+                  } else {
+                    return onChange(0);
+                  }
+                }}
                 value={value?.toString()}
               />
             )}
