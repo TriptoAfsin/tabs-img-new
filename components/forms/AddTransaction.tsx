@@ -90,7 +90,7 @@ function AddTransaction({ setModal, cellId }) {
   return (
     <ScrollView>
       <Box display={"flex"} flexDir={"column"}>
-        <FormControl>
+        <FormControl isReadOnly>
           <FormControl.Label>Select Product</FormControl.Label>
           <Controller
             control={control}
@@ -132,8 +132,7 @@ function AddTransaction({ setModal, cellId }) {
             </FormControl.ErrorMessage>
           )}
         </FormControl>
-
-        <FormControl mt="3">
+        <FormControl mt="3" isReadOnly>
           <FormControl.Label>Action Type</FormControl.Label>
           <Controller
             control={control}

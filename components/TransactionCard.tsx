@@ -14,7 +14,6 @@ export default function TransactionCard({
     data: productData,
     refetch: refetchProduct,
   } = useGetProductById(parseInt(productId));
-  console.log(productData?.data?.product[0]);
   return (
     <Box
       borderRadius="md"

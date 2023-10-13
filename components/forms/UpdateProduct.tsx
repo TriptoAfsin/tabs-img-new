@@ -134,7 +134,7 @@ function UpdateProduct({ ref, setModal, oldData }) {
             </FormControl.ErrorMessage>
           )}
         </FormControl>
-        <FormControl mt="3">
+        <FormControl mt="3" isReadOnly>
           <FormControl.Label>Type</FormControl.Label>
           <Controller
             control={control}

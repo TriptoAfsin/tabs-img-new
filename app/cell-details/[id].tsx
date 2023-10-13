@@ -1,5 +1,7 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import { useLocalSearchParams } from "expo-router";
 import { Box, Button, Spinner, Text } from "native-base";
 import React, { useState } from "react";
@@ -17,11 +19,15 @@ import AddTransaction from "../../components/forms/AddTransaction";
 import UpdateTransaction from "../../components/forms/UpdateTransaction";
 import { useGetCellInfo } from "../../hooks/api/useGetCellInfo";
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 function CellDetails() {
   const { id } = useLocalSearchParams();
   const [modalVisible, setModalVisible] = useState(false);
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState({});
+  const userTimeZone = dayjs.tz.guess();
   const styles = StyleSheet.create({
     centeredView: {
       flex: 1,
@@ -50,7 +56,6 @@ function CellDetails() {
     data: cellData,
     refetch: refetchCellInfo,
   } = useGetCellInfo(parseInt(id?.toString()));
-  console.log(cellData?.data?.cellInfo);
   return (
     <>
       <Modal
@@ -186,15 +191,15 @@ function CellDetails() {
                               actionType={item?.action_type}
                               productId={item?.product_id}
                               qty={item?.qty}
-                              timestamp={dayjs(item?.timestamp).format(
-                                "DD/MM/YYYY (h:ma)"
-                              )}
+                              timestamp={dayjs(item?.timestamp)
+                                .subtract(5, "h")
+                                .format("DD/MM/YYYY (h:ma)")}
                               transactionId={item?.transactionId}
                             />
                           </Pressable>
                         )}
                         keyExtractor={item =>
-                          `${item?.transactionId}-${item?.action_type}`
+                          `${item?.transaction_id}-${item?.action_type}`
                         }
                       />
                     </>
